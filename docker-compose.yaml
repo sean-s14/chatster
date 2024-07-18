@@ -1,0 +1,11 @@
+services:
+  app:
+    container_name: chatster-server-cont
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server/src:/app/src
+    command: npm run dev
