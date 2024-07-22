@@ -22,6 +22,7 @@ services:
       - "3000:3000"
     volumes:
       - ./server/src:/app/src
+      - ./server/test:/app/test
     networks:
       - chatster-network
     env_file:
