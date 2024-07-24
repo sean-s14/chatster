@@ -10,8 +10,12 @@ services:
       - "5432:5432"
     networks:
       - chatster-network
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   server:
     container_name: chatster-server
@@ -25,15 +29,13 @@ services:
       - ./server/test:/app/test
     networks:
       - chatster-network
-    env_file:
-      - ./server/.env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     command: sh -c "npx prisma generate && npm run dev"
 
 networks:
   chatster-network:
     driver: bridge
-
-volumes:
-  postgres-data:
