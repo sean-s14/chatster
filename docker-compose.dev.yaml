@@ -3,5 +3,25 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  server:
+    volumes:
+      - ./server/src:/app/src
+      - ./server/test:/app/test
+    command: sh -c "npx prisma generate && npm run dev"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    networks:
+      - chatster-network
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
 volumes:
   postgres-data:

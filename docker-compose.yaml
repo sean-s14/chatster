@@ -11,7 +11,7 @@ services:
     networks:
       - chatster-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -24,9 +24,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./server/src:/app/src
-      - ./server/test:/app/test
     networks:
       - chatster-network
     environment:
@@ -34,7 +31,23 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: sh -c "npx prisma generate && npm run dev"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api || exit 1"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+
+  client:
+    container_name: chatster-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    networks:
+      - chatster-network
+    depends_on:
+      server:
+        condition: service_healthy
 
 networks:
   chatster-network:

@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git(
                     url: "${env.GIT_URL}",
-                    branch: 'main'
+                    branch: 'feature'
                 )
             }
         }
@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     bat 'docker-compose --version'
-                    bat "docker-compose up -d --build"
+                    bat "docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --build"
                     dir('./server') {
                         bat 'docker exec chatster-server npx prisma migrate dev --name init'
                     }
