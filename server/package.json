@@ -1,17 +1,17 @@
 {
   "name": "chatster-server",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
     "dev": "nodemon -L src/server.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "Sean Stocker",
   "license": "ISC",
-  "description": "A simple chatapp with Express.js and React.js",
+  "description": "Server side for chatster app",
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "dotenv": "^16.4.5",
