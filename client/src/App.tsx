@@ -1,5 +1,5 @@
-import Navigation from "./components/navigation";
-import { ThemeProvider } from "./components/theme-provider";
+import Navigation from "@/components/navigation/navigation";
+import { ThemeProvider } from "@/components/theme-provider";
 
 function App() {
   return (
