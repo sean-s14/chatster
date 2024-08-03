@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     bat 'docker-compose --version'
-                    bat "docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --build"
+                    bat "docker-compose -f docker-compose.yaml -f docker-compose.test.yaml up -d --build"
                     dir('./server') {
                         bat 'docker exec chatster-server npx prisma migrate dev --name init'
                     }
@@ -28,6 +28,9 @@ pipeline {
                 script {
                     dir('./server') {
                         bat "docker exec chatster-server npm run test"
+                    }
+                    dir('./client') {
+                        bat 'docker exec chatster-client npm run test -- run'
                     }
                 }
             }

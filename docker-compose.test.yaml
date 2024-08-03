@@ -1,0 +1,16 @@
+services:
+  server:
+    command: sh -c "npx prisma generate && npm run build && npm run start"
+
+  client:
+    container_name: chatster-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.test
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      server:
+        condition: service_healthy
