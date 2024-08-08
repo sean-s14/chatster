@@ -1,6 +1,9 @@
-import Navigation from "@/components/navigation/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import routes from "@/pages/router-config";
+
+const router = createBrowserRouter(routes);
 
 function App() {
   return (
@@ -14,10 +17,7 @@ function App() {
       cacheLocation="localstorage"
     >
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Navigation />
-        <h1 className="text-3xl font-bold underline text-center mt-4">
-          Auth0 Setup Complete!
-        </h1>
+        <RouterProvider router={router} />
       </ThemeProvider>
     </Auth0Provider>
   );

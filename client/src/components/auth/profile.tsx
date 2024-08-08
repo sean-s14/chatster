@@ -14,6 +14,7 @@ import {
   AvatarImage,
 } from "@/components/shadcn/ui/avatar";
 import LogoutButton from "@/components/auth/logout-btn";
+import { Link } from "react-router-dom";
 
 export default function Profile({ user }: { user: User }) {
   return (
@@ -35,7 +36,9 @@ export default function Profile({ user }: { user: User }) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="line-through">Settings</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/settings">Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem className="line-through">Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="p-0">

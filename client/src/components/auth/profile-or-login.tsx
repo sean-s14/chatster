@@ -7,7 +7,11 @@ export default function ProfileOrLogin() {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className="flex items-center">
+        <Spinner size={24} borderSize={2} />
+      </div>
+    );
   }
 
   if (isAuthenticated && user) {

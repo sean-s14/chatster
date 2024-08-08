@@ -1,10 +1,36 @@
-export default function Spinner() {
+export default function Spinner({
+  size = 20,
+  borderSize = 2,
+}: {
+  size?: number;
+  borderSize?: number;
+}) {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="relative">
-        <div className="w-6 h-6 border-2 border-blue-400 border-transparent rounded-full animate-spin"></div>
-        <div className="absolute top-0 left-0 w-6 h-6 border-2 border-blue-400 border-t-transparent border-t-2 rounded-full animate-spin"></div>
-      </div>
+    <div
+      className="relative"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
+      <div
+        className="absolute top-0 left-0 border-slate-800 rounded-full"
+        style={{
+          width: size,
+          height: size,
+          borderWidth: borderSize,
+          borderTopWidth: borderSize,
+        }}
+      ></div>
+      <div
+        className="absolute top-0 left-0 border-blue-400 border-t-transparent rounded-full animate-spin"
+        style={{
+          width: size,
+          height: size,
+          borderWidth: borderSize,
+          borderTopWidth: borderSize,
+        }}
+      ></div>
     </div>
   );
 }
