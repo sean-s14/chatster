@@ -18,5 +18,9 @@ export default function ProfileOrLogin() {
     return <Profile user={user} />;
   }
 
-  return <LoginButton />;
+  if (!isAuthenticated && !isLoading) {
+    return <LoginButton />;
+  }
+
+  return null;
 }
