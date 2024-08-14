@@ -1,7 +1,7 @@
-FROM node:20
+FROM cypress/browsers:node-20.16.0-chrome-127.0.6533.88-1-ff-128.0.3-edge-127.0.2651.74-1
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 5173
-CMD ["npm", "run", "dev"]
+EXPOSE 3000
+CMD ["npm", "run", "dev", "--", "--host"]

@@ -23,7 +23,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "8080:8080"
     networks:
       - chatster-network
     environment:
@@ -32,7 +32,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/api || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api || exit 1"]
       interval: 30s
       retries: 3
       start_period: 10s

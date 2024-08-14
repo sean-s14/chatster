@@ -4,5 +4,9 @@ import { Button } from "@/components/shadcn/ui/button";
 export default function LoginButton() {
   const { loginWithRedirect } = useAuth0();
 
-  return <Button onClick={() => loginWithRedirect()}>Login</Button>;
+  return (
+    <Button onClick={() => loginWithRedirect()} id="login">
+      Login
+    </Button>
+  );
 }

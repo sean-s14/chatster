@@ -4,7 +4,7 @@ import prisma from "./prismaClient";
 
 // Load environment variables from .env file
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const server = app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
