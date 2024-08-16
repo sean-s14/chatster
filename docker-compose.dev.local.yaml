@@ -1,4 +1,8 @@
 services:
+  postgres:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
   server:
     volumes:
       - ./server/src:/app/src
@@ -26,3 +30,6 @@ services:
     depends_on:
       server:
         condition: service_healthy
+
+volumes:
+  postgres-data:
