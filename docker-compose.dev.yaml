@@ -1,8 +1,5 @@
 services:
   server:
-    volumes:
-      - ./server/src:/app/src
-      - ./server/test:/app/test
     command: sh -c "npx prisma generate && npm run dev"
 
   client:
@@ -11,11 +8,6 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
-    networks:
-      - chatster-network
-    volumes:
-      - ./client:/app
-      - /app/node_modules
     environment:
       NODE_ENV: development
       VITE_AUTH0_DOMAIN: ${VITE_AUTH0_DOMAIN}
@@ -23,6 +15,3 @@ services:
       AUTH0_TEST_EMAIL: ${AUTH0_TEST_EMAIL}
       AUTH0_TEST_PASSWORD: ${AUTH0_TEST_PASSWORD}
       VITE_BASE_URL: ${VITE_BASE_URL}
-    depends_on:
-      server:
-        condition: service_healthy

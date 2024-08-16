@@ -3,5 +3,15 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  server:
+    volumes:
+      - ./server/src:/app/src
+      - ./server/test:/app/test
+
+  client:
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
 volumes:
   postgres-data:
