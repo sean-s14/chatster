@@ -17,7 +17,7 @@ if ! command_exists docker-compose; then
     exit 1
 fi
 
-DOCKER_CMD="docker-compose down -v"
+DOCKER_CMD="docker-compose down -v --remove-orphans"
 
 echo "Stopping docker-compose with the following command:"
 echo $DOCKER_CMD

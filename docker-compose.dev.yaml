@@ -5,6 +5,24 @@ services:
       dockerfile: Dockerfile.dev
     command: sh -c "npx prisma generate && npm run dev"
 
+  pinggy:
+    container_name: chatster-pinggy
+    stop_grace_period: 5s
+    build:
+      context: .
+      dockerfile: Dockerfile.pinggy
+    command: >
+      ssh -p 443 -R0:server:${SERVER_PORT} -L4300:localhost:4300 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 ${PINGGY_ACCESS_TOKEN}@eu.a.pinggy.io \"k:${PINGGY_BEARER_TOKEN}\"
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      PINGGY_ACCESS_TOKEN: ${PINGGY_ACCESS_TOKEN}
+      PINGGY_BEARER_TOKEN: ${PINGGY_BEARER_TOKEN}
+    networks:
+      - chatster-network
+    depends_on:
+      server:
+        condition: service_healthy
+
   client:
     build:
       context: ./client

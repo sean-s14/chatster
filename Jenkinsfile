@@ -17,7 +17,7 @@ pipeline {
                     bat 'docker-compose --version'
                     bat "docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d --build"
                     dir('./server') {
-                        bat 'docker exec chatster-server npx prisma migrate dev --name init'
+                        bat 'docker exec chatster-server npx prisma migrate deploy'
                     }
                 }
             }
@@ -50,6 +50,9 @@ pipeline {
                 script {
                     bat 'docker-compose --version'
                     bat "docker-compose -f docker-compose.yaml -f docker-compose.test.yaml up -d --build"
+                    dir('./server') {
+                        bat 'docker exec chatster-server npx prisma migrate deploy'
+                    }
                 }
             }
         }
@@ -68,7 +71,7 @@ pipeline {
     post {
         always {
             script {
-                bat "docker-compose down -v"
+                bat "docker-compose down -v --remove-orphans"
             }
         }
     }
