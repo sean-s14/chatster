@@ -1,12 +1,12 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@/components/shadcn/ui/button";
+import { Link } from "react-router-dom";
 
 export default function LoginButton() {
-  const { loginWithRedirect } = useAuth0();
-
   return (
-    <Button onClick={() => loginWithRedirect()} id="login">
-      Login
-    </Button>
+    <Link to="/login" className="w-full h-full">
+      <Button id="login-btn" variant={"ghost"}>
+        Login
+      </Button>
+    </Link>
   );
 }

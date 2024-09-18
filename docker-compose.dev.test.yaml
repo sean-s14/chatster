@@ -1,0 +1,11 @@
+services:
+  server:
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run dev"
+    volumes:
+      - /app/node_modules
+
+  client:
+    environment:
+      VITE_SERVER_BASE_URL: ${SERVER_BASE_URL_BY_HOSTNAME}
+    volumes:
+      - /app/node_modules

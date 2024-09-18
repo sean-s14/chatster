@@ -2,24 +2,15 @@
 
 Cypress.Commands.add("login", (email, password) => {
   cy.session([email, password], () => {
-    // This is to ensure the access token is available
-    cy.intercept("POST", "**/oauth/token").as("authRequest");
+    const BASE_URL = Cypress.env("VITE_BASE_URL");
+    cy.visit(`${BASE_URL}/login`);
 
-    cy.visit(Cypress.env("VITE_BASE_URL"));
-    cy.get("#login").click();
+    cy.get("#email").type(email);
+    cy.get("#password").type(password);
+    cy.get('button[type="submit"]').click();
 
-    cy.origin(
-      Cypress.env("VITE_AUTH0_DOMAIN"),
-      { args: { email, password } },
-      ({ email, password }) => {
-        cy.get("#username").type(email);
-        cy.get("#password").type(password);
-        cy.get('button[type="submit"][name="action"]').click();
-      }
-    );
-
-    cy.wait("@authRequest"); // This is to ensure the access token is available
-
+    // Ensure the user is redirected to the home page
+    cy.url().should("eq", `${BASE_URL}/`);
     cy.get("h1").should("contain", "Welcome to Chatster!");
   });
 });

@@ -1,23 +1,30 @@
 services:
-  server:
-    command: sh -c "npx prisma generate && npm run build && npm run start"
-
-  pinggy:
-    container_name: chatster-pinggy
+  mkcert:
+    container_name: chatster-mkcert
     build:
       context: .
-      dockerfile: Dockerfile.pinggy
-    command: >
-      ssh -p 443 -R0:server:${SERVER_PORT} -L4300:localhost:4300 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 ${PINGGY_ACCESS_TOKEN}@eu.a.pinggy.io \"k:${PINGGY_BEARER_TOKEN}\"
-    environment:
-      SERVER_PORT: ${SERVER_PORT}
-      PINGGY_ACCESS_TOKEN: ${PINGGY_ACCESS_TOKEN}
-      PINGGY_BEARER_TOKEN: ${PINGGY_BEARER_TOKEN}
+      dockerfile: Dockerfile.mkcert
     networks:
       - chatster-network
+    volumes:
+      - ./certs:/certs
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "mkcert -key-file /certs/key.pem -cert-file /certs/cert.pem localhost 127.0.0.1 ::1",
+      ]
+
+  server:
+    command: sh -c "npx prisma generate && npm run build && npm run start"
+    environment:
+      NODE_ENV: development
+      SSL_CRT_FILE: /app/certs/cert.pem
+      SSL_KEY_FILE: /app/certs/key.pem
+    volumes:
+      - ./certs:/app/certs
     depends_on:
-      server:
-        condition: service_healthy
+      - mkcert
 
   client:
     container_name: chatster-client
@@ -25,15 +32,17 @@ services:
       context: ./client
       dockerfile: Dockerfile.test
       args:
-        VITE_AUTH0_DOMAIN: ${AUTH0_DOMAIN}
-        VITE_AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
-        AUTH0_TEST_EMAIL: ${AUTH0_TEST_EMAIL}
-        AUTH0_TEST_PASSWORD: ${AUTH0_TEST_PASSWORD}
+        AUTH_TEST_EMAIL: ${AUTH_TEST_EMAIL}
+        AUTH_TEST_PASSWORD: ${AUTH_TEST_PASSWORD}
         VITE_BASE_URL: ${CLIENT_BASE_URL}
+        VITE_SERVER_BASE_URL: ${SERVER_BASE_URL_BY_HOSTNAME}
+        VITE_SSL_CRT_FILE: /app/certs/cert.pem
+        VITE_SSL_KEY_FILE: /app/certs/key.pem
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
+    volumes:
+      - ./certs:/app/certs
     depends_on:
-      server:
-        condition: service_healthy
+      - mkcert

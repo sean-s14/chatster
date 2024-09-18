@@ -4,13 +4,12 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   server:
+    command: sh -c "npx prisma generate && npm run dev"
     volumes:
-      - ./server/src:/app/src
-      - ./server/test:/app/test
+      - /app/node_modules
 
   client:
     volumes:
-      - ./client:/app
       - /app/node_modules
 
 volumes:

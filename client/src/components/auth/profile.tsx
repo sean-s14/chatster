@@ -1,4 +1,4 @@
-import { User } from "@auth0/auth0-react";
+import { AccessTokenPayload as User } from "@/context/auth-context";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -22,7 +22,7 @@ export default function Profile({ user }: { user: User }) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-10 h-10 rounded-full">
           <Avatar className="w-10 h-10 rounded-full">
-            <AvatarImage alt="Avatar" src={user?.picture} />
+            <AvatarImage alt="Avatar" src={user?.image} />
             <AvatarFallback>
               <img
                 src="/profile-picture.png"
@@ -34,7 +34,7 @@ export default function Profile({ user }: { user: User }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link to="/settings">Settings</Link>

@@ -9,5 +9,6 @@ describe("Routes", () => {
   it("should load the error page", () => {
     cy.visit(`${BASE_URL}/non-existent-page`);
     cy.get("p").should("contain", "Sorry, an unexpected error has occurred.");
+    cy.get("p").should("contain", "Not Found");
   });
 });

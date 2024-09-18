@@ -2,7 +2,9 @@ import RootPage from "@/pages/root-page";
 import ErrorPage from "@/pages/error-page";
 import HomePage from "@/pages/home-page";
 import SettingsPage from "@/pages/settings-page";
-import { AuthenticationGuard } from "@/components/auth/authentication-guard";
+import ProtectedComponent from "@/components/auth/protected-component";
+import LoginPage from "@/pages/auth/login-page";
+import SignupPage from "@/pages/auth/signup-page";
 
 const routes = [
   {
@@ -15,13 +17,16 @@ const routes = [
         element: <HomePage />,
       },
       {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
+      },
+      {
         path: "/settings",
-        element: (
-          <AuthenticationGuard
-            component={SettingsPage}
-            options={{ returnTo: "/settings" }}
-          />
-        ),
+        element: <ProtectedComponent Component={SettingsPage} />,
       },
     ],
   },

@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default defineConfig({
+  chromeWebSecurity: false,
   env: {
     VITE_AUTH0_DOMAIN: process.env.VITE_AUTH0_DOMAIN,
-    AUTH0_TEST_EMAIL: process.env.AUTH0_TEST_EMAIL,
-    AUTH0_TEST_PASSWORD: process.env.AUTH0_TEST_PASSWORD,
+    AUTH_TEST_EMAIL: process.env.AUTH_TEST_EMAIL,
+    AUTH_TEST_PASSWORD: process.env.AUTH_TEST_PASSWORD,
     VITE_BASE_URL: process.env.VITE_BASE_URL,
   },
   e2e: {

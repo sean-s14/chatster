@@ -1,10 +1,13 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import Profile from "@/components/auth/profile";
 import LoginButton from "@/components/auth/login-btn";
+import SignupButton from "@/components/auth/signup-btn";
 import Spinner from "@/components/spinner";
+import { useAuth } from "@/context/auth-context";
+import useAuthCheck from "@/hooks/useAuthCheck";
 
 export default function ProfileOrLogin() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuthCheck();
+  const { user } = useAuth();
 
   if (isLoading) {
     return (
@@ -19,7 +22,12 @@ export default function ProfileOrLogin() {
   }
 
   if (!isAuthenticated && !isLoading) {
-    return <LoginButton />;
+    return (
+      <div className="flex gap-2">
+        <LoginButton />
+        <SignupButton />
+      </div>
+    );
   }
 
   return null;

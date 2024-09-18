@@ -1,4 +1,11 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { Button } from "@/components/shadcn/ui/button";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/shadcn/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -19,12 +26,20 @@ export default function ErrorPage() {
   }
 
   return (
-    <div
-      id="error-page"
-      className="flex flex-col items-center pt-10 gap-2 text-xl"
-    >
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p className="font-semibold">{errorMessage}</p>
+    <div id="error-page" className="container mx-auto max-w-md pt-10">
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          <p>Sorry, an unexpected error has occurred.</p>
+          <p className="text-base font-semibold mt-2">{errorMessage}</p>
+        </AlertDescription>
+      </Alert>
+      <div className="mt-4 text-center">
+        <Button variant="outline" onClick={() => (window.location.href = "/")}>
+          Go back to homepage
+        </Button>
+      </div>
     </div>
   );
 }

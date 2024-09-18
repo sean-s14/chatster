@@ -28,11 +28,15 @@ services:
       - chatster-network
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      CLIENT_BASE_URL: ${CLIENT_BASE_URL}
+      SERVER_BASE_URL: ${SERVER_BASE_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      PORT: ${SERVER_PORT}
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://server:8080/api || exit 1"]
+      test: ["CMD-SHELL", "curl -fk ${SERVER_BASE_URL}/api || exit 1"]
       interval: 60s
       retries: 3
       start_period: 10s
@@ -45,6 +49,9 @@ services:
       dockerfile: Dockerfile.prod
     networks:
       - chatster-network
+    environment:
+      VITE_SERVER_BASE_URL: ${SERVER_BASE_URL}
+      VITE_BASE_URL: ${CLIENT_BASE_URL}
     depends_on:
       server:
         condition: service_healthy
