@@ -26,8 +26,6 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-// TODO: Update when nginx is configured
-const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 const axiosInstance = createAxiosInstance();
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -54,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await axiosInstance.post(
-        SERVER_BASE_URL + "/api/auth/login",
+        "/api/auth/login",
         { email, password },
         {
           withCredentials: true,
@@ -70,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     axiosInstance.post(
-      SERVER_BASE_URL + "/api/auth/logout",
+      "/api/auth/logout",
       {},
       {
         withCredentials: true,
@@ -86,7 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const refreshAccessToken = async () => {
     try {
       const response = await axiosInstance.post(
-        SERVER_BASE_URL + "/api/auth/token",
+        "/api/auth/token",
         {},
         {
           withCredentials: true,

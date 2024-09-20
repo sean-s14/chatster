@@ -18,6 +18,13 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+    proxy: {
+      "/api": {
+        target: process.env.VITE_SERVER_BASE_URL,
+        changeOrigin: true,
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   preview: {
     https: {

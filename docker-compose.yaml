@@ -50,7 +50,7 @@ services:
     networks:
       - chatster-network
     environment:
-      VITE_SERVER_BASE_URL: ${SERVER_BASE_URL}
+      VITE_SERVER_BASE_URL: ${SERVER_BASE_URL_BY_HOSTNAME}
       VITE_BASE_URL: ${CLIENT_BASE_URL}
     depends_on:
       server:

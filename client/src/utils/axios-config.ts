@@ -1,11 +1,8 @@
 import axios from "axios";
 
-// TODO: Update when nginx is configured
-const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
-
 function createAxiosInstance(bearer_token?: string) {
   const instance = axios.create({
-    baseURL: SERVER_BASE_URL + "/",
+    baseURL: "",
     timeout: 10000,
     headers: {
       "Content-Type": "application/json",
