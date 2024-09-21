@@ -4,6 +4,7 @@ import {
   AvatarFallback,
 } from "@/components/shadcn/ui/avatar";
 import { useAuth } from "@/context/auth-context";
+import DeleteAccountAlertDialog from "@/components/auth/delete-account-alert-dialog";
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -31,6 +32,7 @@ export default function SettingsPage() {
           <p className="w-2/3 text-start text-blue-300">{user?.email}</p>
         </div>
       </div>
+      <DeleteAccountAlertDialog className="mt-6" />
     </div>
   );
 }
