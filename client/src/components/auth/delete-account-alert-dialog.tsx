@@ -13,7 +13,9 @@ import { Button } from "@/components/shadcn/ui/button";
 import createAxiosInstance from "@/utils/axios-config";
 import { deleteAccount } from "@/services/delete-account";
 import { useAuth } from "@/context/auth-context";
+import useAuthCheck from "@/hooks/useAuthCheck";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/shadcn/use-toast";
 
 export default function DeleteAccountAlertDialog({
   className,
@@ -22,32 +24,38 @@ export default function DeleteAccountAlertDialog({
 }) {
   const { accessToken, user, logout } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isAuthenticated } = useAuthCheck();
 
   async function deleteAccountWrapper() {
-    if (!user) {
-      // TODO: Display error in a toast
-      console.error("User is null");
+    if (!isAuthenticated) {
+      toast({
+        title: "Error",
+        description: "You are not authenticated",
+        variant: "destructive",
+      });
       return;
     }
-    if (!accessToken) {
-      // TODO: Display error in a toast
-      console.error("Access token is null");
-      return;
-    }
-    const axiosInstance = createAxiosInstance(accessToken);
+    const axiosInstance = createAxiosInstance(accessToken!);
     try {
-      const response = await deleteAccount(axiosInstance, user.id.toString());
+      const response = await deleteAccount(axiosInstance, user!.id.toString());
       if (response.status === 204) {
-        // TODO: Display success message in a toast
-        console.log("Account deleted successfully");
+        toast({
+          title: "Success",
+          description: "Your account has been deleted",
+          variant: "success",
+        });
         logout();
         navigate("/");
-      } else {
-        // TODO: Display error message in a toast
       }
     } catch (error) {
       // TODO: Display error message in a toast
       console.error("Error deleting account:", error);
+      toast({
+        title: "Error",
+        description: "Request failed",
+        variant: "destructive",
+      });
     }
   }
 

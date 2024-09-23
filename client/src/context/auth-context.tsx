@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import createAxiosInstance from "@/utils/axios-config";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { logout as logoutService } from "@/services/logout";
+import { refreshAccessToken as refreshAccessTokenService } from "@/services/refresh-access-token";
 
 export interface AccessTokenPayload extends JwtPayload {
   id: number | string;
@@ -66,14 +68,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    axiosInstance.post(
-      "/api/auth/logout",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+  const logout = async () => {
+    try {
+      await logoutService(axiosInstance);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
     // To prevent refresh token from being used after logout
     setTimeout(() => {
       setAccessToken(null);
@@ -83,14 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const refreshAccessToken = async () => {
     try {
-      const response = await axiosInstance.post(
-        "/api/auth/token",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      const newAccessToken = response.data.accessToken;
+      const newAccessToken = await refreshAccessTokenService(axiosInstance);
       setAccessToken(newAccessToken);
       return newAccessToken;
     } catch (error) {
