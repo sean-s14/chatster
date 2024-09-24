@@ -13,7 +13,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import createAxiosInstance from "@/utils/axios-config";
 import { deleteAccount } from "@/services/delete-account";
 import { useAuth } from "@/context/auth-context";
-import useAuthCheck from "@/hooks/useAuthCheck";
+import useAuthCheck from "@/hooks/use-auth-check";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/shadcn/use-toast";
 

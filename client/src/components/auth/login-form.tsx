@@ -5,12 +5,14 @@ import { Label } from "@/components/shadcn/ui/label";
 import { loginValidate } from "@/utils/auth/credential-validation";
 import { LoginFormData } from "@/types/form-data";
 import { useAuth } from "@/context/auth-context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AxiosError } from "axios";
+import { useToast } from "@/hooks/shadcn/use-toast";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState<LoginFormData>({
     email: null,
@@ -40,19 +42,25 @@ const LoginForm: React.FC = () => {
       try {
         const response = await login(formData.email!, formData.password!);
         if (response.status === 200) {
-          // TODO: Add toast to signify successful login
-          return navigate("/");
+          toast({
+            title: "Login Successful!",
+            variant: "success",
+          });
+          navigate("/");
+          return;
         }
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.data.errors) {
             setErrors(error.response?.data.errors);
-          } else if (error.response?.data.error) {
-            // TODO: Change alert to toast
-            alert(error.response?.data.error);
+          } else if (error.response?.data.message) {
+            toast({
+              title: "Login failed",
+              description: error.response?.data.message,
+              variant: "destructive",
+            });
           }
         }
-        console.error("Login failed:", error);
       }
       return;
     } else {
@@ -92,6 +100,12 @@ const LoginForm: React.FC = () => {
         <Button type="submit" className="w-32" variant={"outline"}>
           Submit
         </Button>
+      </div>
+      <div className="mt-4 flex items-center justify-center">
+        <span>Don't have an account? Sign up</span>
+        <Link to="/signup" className="text-blue-400 underline ml-1">
+          here
+        </Link>
       </div>
     </form>
   );

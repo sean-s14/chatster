@@ -8,69 +8,7 @@ import { Toaster } from "@/components/shadcn/ui/toaster";
 import * as deleteAccountService from "@/services/delete-account";
 import * as logoutService from "@/services/logout";
 import * as refreshAccessTokenService from "@/services/refresh-access-token";
-import { AccessTokenPayload } from "@/context/auth-context";
-import jwt from "jsonwebtoken";
-
-function generateAccessToken(user: AccessTokenPayload) {
-  return jwt.sign(user, "jwt_secret", { expiresIn: "15m" });
-}
-
-const user = {
-  id: 1,
-  name: "John Doe",
-  image: "../../../public/avatar.png",
-  email: "john.doe@example.com",
-  username: "johndoe",
-  role: "basic",
-};
-
-const accessToken = generateAccessToken(user);
-
-const logoutMockResponse = {
-  success: {
-    status: 200,
-    statusText: "OK",
-    data: null,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    config: {} as any,
-  },
-};
-
-const refreshAccessTokenMockResponse = {
-  success: accessToken,
-  unauthorized: {
-    status: 401,
-    statusText: "Unauthorized",
-    data: { error: "Unauthorized" },
-    headers: {
-      "Content-Type": "application/json",
-    },
-    config: {} as any,
-  },
-};
-
-const deleteAccountMockResponse = {
-  success: {
-    status: 204,
-    statusText: "No Content",
-    data: null,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    config: {} as any,
-  },
-  serverError: {
-    status: 500,
-    statusText: "Internal Server Error",
-    data: { error: "Error deleting user" },
-    headers: {
-      "Content-Type": "application/json",
-    },
-    config: {} as any,
-  },
-};
+import mockResponse from "@/__mocks__/mock-api-responses";
 
 describe("DeleteAccountAlertDialog", () => {
   beforeEach(() => {
@@ -98,15 +36,15 @@ describe("DeleteAccountAlertDialog", () => {
 
   it("Deletes account on click", async () => {
     vi.spyOn(refreshAccessTokenService, "refreshAccessToken").mockResolvedValue(
-      refreshAccessTokenMockResponse.success
+      mockResponse.refreshAccessToken.success
     );
 
     vi.spyOn(deleteAccountService, "deleteAccount").mockResolvedValue(
-      deleteAccountMockResponse.success
+      mockResponse.deleteAccount.success
     );
 
     vi.spyOn(logoutService, "logout").mockResolvedValue(
-      logoutMockResponse.success
+      mockResponse.logout.success
     );
 
     const userSetup = userEvent.setup();
@@ -136,7 +74,7 @@ describe("DeleteAccountAlertDialog", () => {
 
   it("Displays error toast if user is not authenticated", async () => {
     vi.spyOn(refreshAccessTokenService, "refreshAccessToken").mockRejectedValue(
-      refreshAccessTokenMockResponse.unauthorized
+      mockResponse.refreshAccessToken.unauthorized
     );
 
     const userSetup = userEvent.setup();
@@ -166,11 +104,11 @@ describe("DeleteAccountAlertDialog", () => {
 
   it("Displays error toast if response status is error code", async () => {
     vi.spyOn(refreshAccessTokenService, "refreshAccessToken").mockResolvedValue(
-      refreshAccessTokenMockResponse.success
+      mockResponse.refreshAccessToken.success
     );
 
     vi.spyOn(deleteAccountService, "deleteAccount").mockRejectedValue(
-      deleteAccountMockResponse.serverError
+      mockResponse.deleteAccount.serverError
     );
 
     const userSetup = userEvent.setup();
@@ -194,7 +132,7 @@ describe("DeleteAccountAlertDialog", () => {
     expect(deleteAccountService.deleteAccount).toHaveBeenCalled();
     expect(logoutService.logout).not.toHaveBeenCalled();
 
-    const successToast = screen.getByText("Request failed");
-    expect(successToast).toBeInTheDocument();
+    const errorToast = screen.getByText("Request failed");
+    expect(errorToast).toBeInTheDocument();
   });
 });

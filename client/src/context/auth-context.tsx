@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import createAxiosInstance from "@/utils/axios-config";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { logout as logoutService } from "@/services/logout";
+import { login as loginService } from "@/services/login";
 import { refreshAccessToken as refreshAccessTokenService } from "@/services/refresh-access-token";
 
 export interface AccessTokenPayload extends JwtPayload {
@@ -53,13 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axiosInstance.post(
-        "/api/auth/login",
-        { email, password },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await loginService({ email, password });
       setAccessToken(response.data.accessToken);
       return response;
     } catch (error) {

@@ -11,7 +11,8 @@ describe("Setup Test", () => {
     cy.get("#password2").type(password);
     cy.get("button[type='submit']").click();
 
-    cy.url().should("include", "/login");
+    cy.get("div").should("contain", "Signup Successful!"); // Ensure toast is displayed
+    cy.url().should("include", "/login"); // Ensure auto-redirect to login
   });
 
   it("should login with a test user", () => {
@@ -21,6 +22,7 @@ describe("Setup Test", () => {
     cy.get("#password").type(password);
     cy.get('button[type="submit"]').click();
 
+    cy.get("div").should("contain", "Login Successful!"); // Ensure toast is displayed
     cy.url().should("eq", `${BASE_URL}/`);
     cy.get("h1").should("contain", "Welcome to Chatster!");
   });

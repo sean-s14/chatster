@@ -35,10 +35,6 @@ const loginValidate = (
     errors.password = "Password is required";
     valid = false;
     return { valid, errors };
-  } else if (formData.password.length < 8) {
-    errors.password = "Password must be at least 8 characters";
-    valid = false;
-    return { valid, errors };
   }
 
   return { valid, errors };

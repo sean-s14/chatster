@@ -59,12 +59,16 @@ async function login(req: Request, res: Response) {
       },
     });
     if (!existingUser) {
-      return res.status(400).json({ message: "No user with that email" });
+      return res
+        .status(404)
+        .json({ errors: { email: "No user exists with this email" } });
     }
     const isMatch = await bcrypt.compare(password, existingUser.password!);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Incorrect password" });
+      return res
+        .status(400)
+        .json({ errors: { password: "Incorrect password" } });
     }
 
     if (isMatch) {

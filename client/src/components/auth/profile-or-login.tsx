@@ -3,7 +3,7 @@ import LoginButton from "@/components/auth/login-btn";
 import SignupButton from "@/components/auth/signup-btn";
 import Spinner from "@/components/spinner";
 import { useAuth } from "@/context/auth-context";
-import useAuthCheck from "@/hooks/useAuthCheck";
+import useAuthCheck from "@/hooks/use-auth-check";
 
 export default function ProfileOrLogin() {
   const { isAuthenticated, isLoading } = useAuthCheck();

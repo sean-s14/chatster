@@ -1,5 +1,5 @@
 import React from "react";
-import useAuthCheck from "@/hooks/useAuthCheck";
+import useAuthCheck from "@/hooks/use-auth-check";
 import LoadingPage from "@/pages/loading-page";
 import { Navigate } from "react-router-dom";
 

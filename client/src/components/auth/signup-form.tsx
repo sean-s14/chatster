@@ -6,10 +6,12 @@ import { signupValidate } from "@/utils/auth/credential-validation";
 import { SignupFormData } from "@/types/form-data";
 import { signup } from "@/services/signup";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "@/hooks/shadcn/use-toast";
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState<SignupFormData>({
     email: null,
@@ -41,19 +43,25 @@ const SignupForm: React.FC = () => {
       try {
         const response = await signup(formData);
         if (response.status === 201) {
-          // TODO: Add toast notification for successful signup
+          toast({
+            title: "Signup Successful!",
+            variant: "success",
+          });
           return navigate("/login");
         }
       } catch (error) {
+        console.error("Signup failed:", error);
         if (error instanceof AxiosError) {
           if (error.response?.data.errors) {
             setErrors(error.response?.data.errors);
-          } else if (error.response?.data.error) {
-            // TODO: Change alert to toast
-            alert(error.response?.data.error);
+          } else if (error.response?.data.message) {
+            toast({
+              title: "Signup failed",
+              description: error.response?.data.message,
+              variant: "destructive",
+            });
           }
         }
-        console.error("Signup failed:", error);
       }
       return;
     } else {
@@ -114,6 +122,12 @@ const SignupForm: React.FC = () => {
         <Button type="submit" className="w-32" variant={"outline"}>
           Submit
         </Button>
+      </div>
+      <div className="mt-4 flex items-center justify-center">
+        <span>Already have an account? Log in</span>
+        <Link to="/login" className="text-blue-400 underline ml-1">
+          here
+        </Link>
       </div>
     </form>
   );
