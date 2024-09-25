@@ -3,7 +3,6 @@
 ## TODO
 
 - Create tests for service functions
-- Create tests for signup form
 - Create tests for utils/credential-validation.ts
 
 ## Issues

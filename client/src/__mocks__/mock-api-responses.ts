@@ -1,6 +1,67 @@
 import { AxiosError } from "axios";
 import { user, accessToken } from "./mock-user-data";
 
+const signupMockResponse = {
+  success: {
+    status: 201,
+    statusText: "Created",
+    data: { message: "User created" },
+    headers: {
+      "Content-Type": "application/json",
+    },
+    config: {} as any,
+  },
+  serverError: new AxiosError(
+    "Internal Server Error",
+    "500",
+    undefined,
+    undefined,
+    {
+      status: 500,
+      statusText: "Internal Server Error",
+      data: { message: "Something went wrong" },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      config: {} as any,
+    }
+  ),
+  shortPassword: new AxiosError(
+    "Password must be at least 8 characters long",
+    "400",
+    undefined,
+    undefined,
+    {
+      status: 400,
+      statusText: "Bad Request",
+      data: {
+        errors: { password: "Password must be at least 8 characters long" },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      config: {} as any,
+    }
+  ),
+  existingEmail: new AxiosError(
+    "User already exists with this email",
+    "400",
+    undefined,
+    undefined,
+    {
+      status: 400,
+      statusText: "Bad Request",
+      data: {
+        errors: { email: "User already exists with this email" },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      config: {} as any,
+    }
+  ),
+};
+
 const loginMockResponse = {
   success: {
     status: 200,
@@ -114,6 +175,7 @@ const deleteAccountMockResponse = {
 };
 
 const mockResponse = {
+  signup: signupMockResponse,
   login: loginMockResponse,
   logout: logoutMockResponse,
   refreshAccessToken: refreshAccessTokenMockResponse,
