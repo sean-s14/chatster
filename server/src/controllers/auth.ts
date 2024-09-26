@@ -95,8 +95,6 @@ async function login(req: Request, res: Response) {
 async function getNewAccessToken(req: Request, res: Response) {
   const { refreshToken } = req.cookies;
 
-  console.log(req.cookies);
-
   if (!refreshToken)
     return res.status(401).json({ message: "Refresh Token not provided" });
 

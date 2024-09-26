@@ -56,7 +56,7 @@ async function createUser(req: Request, res: Response): Promise<Response> {
     if (existingUser) {
       return res
         .status(400)
-        .json({ message: "User already exists with this email" });
+        .json({ error: "User already exists with this email" });
     }
 
     username = await customGenerateUsername(username);
