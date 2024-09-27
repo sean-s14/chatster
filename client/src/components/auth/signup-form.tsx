@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/shadcn/ui/button";
 import { Input } from "@/components/shadcn/ui/input";
 import { Label } from "@/components/shadcn/ui/label";
-import { signupValidate } from "@/utils/auth/credential-validation";
+import {
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword,
+} from "@/utils/auth/credential-validation";
 import { SignupFormData } from "@/types/form-data";
 import { signup } from "@/services/signup";
 import { AxiosError } from "axios";
@@ -25,8 +29,14 @@ const SignupForm: React.FC = () => {
   });
 
   useEffect(() => {
-    const { errors } = signupValidate(formData);
-    setErrors(errors);
+    const email = validateEmail(formData.email);
+    const password = validatePassword(formData.password);
+    const password2 = validateConfirmPassword(
+      formData.password,
+      formData.password2
+    );
+
+    setErrors({ ...email.errors, ...password.errors, ...password2.errors });
   }, [formData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +48,25 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { valid, errors } = signupValidate(formData, true);
-    if (valid) {
+
+    const email = validateEmail(formData.email, true);
+    const password = validatePassword(formData.password, true);
+    const password2 = validateConfirmPassword(
+      formData.password,
+      formData.password2,
+      true
+    );
+    const valid = email.valid && password.valid && password2.valid;
+
+    if (!valid) {
+      const errors = {
+        ...email.errors,
+        ...password.errors,
+        ...password2.errors,
+      };
+      setErrors(errors);
+      return;
+    } else {
       try {
         const response = await signup(formData);
         if (response.status === 201) {
@@ -63,9 +90,6 @@ const SignupForm: React.FC = () => {
           }
         }
       }
-      return;
-    } else {
-      setErrors(errors);
       return;
     }
   };

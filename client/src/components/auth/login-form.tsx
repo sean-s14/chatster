@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/shadcn/ui/button";
 import { Input } from "@/components/shadcn/ui/input";
 import { Label } from "@/components/shadcn/ui/label";
-import { loginValidate } from "@/utils/auth/credential-validation";
+import {
+  validateEmail,
+  validatePassword,
+} from "@/utils/auth/credential-validation";
 import { LoginFormData } from "@/types/form-data";
 import { useAuth } from "@/context/auth-context";
 import { useNavigate, Link } from "react-router-dom";
@@ -24,8 +27,10 @@ const LoginForm: React.FC = () => {
   });
 
   useEffect(() => {
-    const { errors } = loginValidate(formData);
-    setErrors(errors);
+    const email = validateEmail(formData.email);
+    const password = validatePassword(formData.password);
+
+    setErrors({ ...email.errors, ...password.errors });
   }, [formData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +42,15 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { valid, errors } = loginValidate(formData, true);
-    if (valid) {
+
+    const email = validateEmail(formData.email, true);
+    const password = validatePassword(formData.password, true);
+    const valid = email.valid && password.valid;
+
+    if (!valid) {
+      const errors = { ...email.errors, ...password.errors };
+      setErrors(errors);
+    } else {
       try {
         const response = await login(formData.email!, formData.password!);
         if (response.status === 200) {
@@ -62,9 +74,6 @@ const LoginForm: React.FC = () => {
           }
         }
       }
-      return;
-    } else {
-      setErrors(errors);
       return;
     }
   };

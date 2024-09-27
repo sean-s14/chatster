@@ -96,27 +96,6 @@ describe("Signup Form", () => {
         expect(signupService.signup).not.toHaveBeenCalled();
       });
 
-      it("Displays error when password is less than 8 characters", async () => {
-        const userSetup = userEvent.setup();
-
-        render(
-          <AuthProvider>
-            <BrowserRouter>
-              <SignupForm />
-              <Toaster />
-            </BrowserRouter>
-          </AuthProvider>
-        );
-
-        const passwordInput = screen.getByLabelText("Password:");
-        await userSetup.type(passwordInput, "short");
-
-        expect(
-          screen.queryByText("Password must be at least 8 characters")
-        ).toBeInTheDocument();
-        expect(signupService.signup).not.toHaveBeenCalled();
-      });
-
       it("Displays error when passwords do not match", async () => {
         const userSetup = userEvent.setup();
 
@@ -292,6 +271,47 @@ describe("Signup Form", () => {
         email: user.email,
         password: userPassword,
         password2: userPassword,
+      });
+    });
+
+    it("Displays error when password is less than 8 characters", async () => {
+      const userSetup = userEvent.setup();
+
+      vi.spyOn(signupService, "signup").mockRejectedValue(
+        mockResponse.signup.shortPassword
+      );
+
+      render(
+        <AuthProvider>
+          <BrowserRouter>
+            <SignupForm />
+            <Toaster />
+          </BrowserRouter>
+        </AuthProvider>
+      );
+
+      const emailInput = screen.getByLabelText("Email:");
+      await userSetup.type(emailInput, user.email);
+
+      const shortPassword = "short";
+
+      const passwordInput = screen.getByLabelText("Password:");
+      await userSetup.type(passwordInput, shortPassword);
+
+      const confirmPasswordInput = screen.getByLabelText("Confirm Password:");
+      await userSetup.type(confirmPasswordInput, shortPassword);
+
+      const signupButton = screen.getByRole("button", { name: "Submit" });
+      await userSetup.click(signupButton);
+
+      expect(
+        screen.queryByText("Password must be at least 8 characters long")
+      ).toBeInTheDocument();
+      expect(signupService.signup).toHaveBeenCalledTimes(1);
+      expect(signupService.signup).toHaveBeenCalledWith({
+        email: user.email,
+        password: shortPassword,
+        password2: shortPassword,
       });
     });
   });

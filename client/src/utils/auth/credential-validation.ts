@@ -1,85 +1,79 @@
-import { LoginFormData, SignupFormData } from "@/types/form-data";
+import isEmailValid from "@/utils/isEmailValid";
 
-interface LoginValidateReturn {
+export interface ValidateEmailReturn {
   valid: boolean;
-  errors: LoginFormData;
+  errors: { email: string };
 }
 
-interface SignupValidateReturn {
+const validateEmail = (
+  email: string | null,
+  checkNull: boolean = false
+): ValidateEmailReturn => {
+  const defaultReturn = { valid: true, errors: { email: "" } };
+  if (!checkNull && email === null) {
+    return defaultReturn;
+  }
+
+  if (!email) {
+    return { valid: false, errors: { email: "Email is required" } };
+  }
+
+  if (!isEmailValid(email)) {
+    return { valid: false, errors: { email: "Email is invalid" } };
+  }
+
+  return defaultReturn;
+};
+
+export interface ValidatePasswordReturn {
   valid: boolean;
-  errors: SignupFormData;
+  errors: { password: string };
 }
 
-const loginValidate = (
-  formData: LoginFormData,
-  checkNull?: boolean
-): LoginValidateReturn => {
-  let valid = true;
-  let errors: LoginFormData = { email: "", password: "" };
+const validatePassword = (
+  password: string | null,
+  checkNull: boolean = false
+): ValidatePasswordReturn => {
+  const defaultReturn = { valid: true, errors: { password: "" } };
 
-  // Email validation
-  if (!checkNull && formData.email === null) {
-  } else if (!formData.email) {
-    errors.email = "Email is required";
-    valid = false;
-    return { valid, errors };
-  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-    errors.email = "Email is invalid";
-    valid = false;
-    return { valid, errors };
+  if (!checkNull && password === null) {
+    return defaultReturn;
   }
 
-  // Password validation
-  if (!checkNull && formData.password === null) {
-  } else if (!formData.password) {
-    errors.password = "Password is required";
-    valid = false;
-    return { valid, errors };
+  if (!password) {
+    return { valid: false, errors: { password: "Password is required" } };
   }
 
-  return { valid, errors };
+  return defaultReturn;
 };
 
-const signupValidate = (
-  formData: SignupFormData,
-  checkNull?: boolean
-): SignupValidateReturn => {
-  let valid = true;
-  let errors: SignupFormData = { email: "", password: "", password2: "" };
+export interface ValidatePasswordsReturn {
+  valid: boolean;
+  errors: { password2: string };
+}
 
-  // Email validation
-  if (!checkNull && formData.email === null) {
-  } else if (!formData.email) {
-    errors.email = "Email is required";
-    valid = false;
-    return { valid, errors };
-  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-    errors.email = "Email is invalid";
-    valid = false;
-    return { valid, errors };
+const validateConfirmPassword = (
+  password: string | null,
+  confirmPassword: string | null,
+  checkNull: boolean = false
+): ValidatePasswordsReturn => {
+  const defaultReturn = {
+    valid: true,
+    errors: { password2: "" },
+  };
+
+  if (!checkNull && confirmPassword === null) {
+    return defaultReturn;
   }
 
-  // Password validation
-  if (!checkNull && formData.password === null) {
-  } else if (!formData.password) {
-    errors.password = "Password is required";
-    valid = false;
-    return { valid, errors };
-  } else if (formData.password.length < 8) {
-    errors.password = "Password must be at least 8 characters";
-    valid = false;
-    return { valid, errors };
+  if (password !== confirmPassword) {
+    return {
+      valid: false,
+      errors: { password2: "Passwords do not match" },
+    };
   }
 
-  // Password confirmation
-  if (!checkNull && formData.password2 === null) {
-  } else if (formData.password !== formData.password2) {
-    errors.password2 = "Passwords do not match";
-    valid = false;
-    return { valid, errors };
-  }
-
-  return { valid, errors };
+  return defaultReturn;
 };
 
-export { loginValidate, signupValidate };
+export { validateEmail, validatePassword, validateConfirmPassword };

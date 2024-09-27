@@ -1,7 +1,7 @@
 interface SignupFormData {
   email: string | null;
   password: string | null;
-  password2?: string | null;
+  password2: string | null;
 }
 
 interface LoginFormData {
