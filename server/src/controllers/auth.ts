@@ -7,7 +7,7 @@ import {
   addRefreshTokenToCookie,
   generateAccessToken,
 } from "../utils/jwt";
-import { AccessTokenPayload } from "../types/user";
+import { AccessTokenPayload, AccessTokenInput } from "../types/user";
 
 async function signup(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -72,7 +72,7 @@ async function login(req: Request, res: Response) {
     }
 
     if (isMatch) {
-      const accessTokenPayload: AccessTokenPayload = {
+      const accessTokenPayload: AccessTokenInput = {
         id: existingUser.id.toString(),
         email: existingUser.email,
         username: existingUser.username,

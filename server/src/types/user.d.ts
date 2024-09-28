@@ -13,7 +13,7 @@ interface User {
   updatedAt: Date;
 }
 
-interface AccessTokenPayload extends JwtPayload {
+interface AccessTokenInput {
   id: number | string;
   email: string;
   username: string;
@@ -22,8 +22,18 @@ interface AccessTokenPayload extends JwtPayload {
   role: string;
 }
 
-interface RefreshTokenPayload extends JwtPayload {
-  id: number;
-}
+interface AccessTokenPayload extends AccessTokenInput, JwtPayload {}
 
-export { User, AccessTokenPayload, RefreshTokenPayload };
+type RefreshTokenInput = {
+  id: number;
+};
+
+interface RefreshTokenPayload extends RefreshTokenInput, JwtPayload {}
+
+export {
+  User,
+  AccessTokenInput,
+  AccessTokenPayload,
+  RefreshTokenInput,
+  RefreshTokenPayload,
+};

@@ -1,4 +1,4 @@
-import isEmailValid from "@/utils/isEmailValid";
+import isEmailValid from "@/utils/is-email-valid";
 
 export interface ValidateEmailReturn {
   valid: boolean;
