@@ -15,7 +15,7 @@ describe("Profile", () => {
       image: "../../../public/avatar.png",
       email: "john.doe@example.com",
       username: "johndoe",
-      role: "basic",
+      role: "BASIC",
     };
 
     render(

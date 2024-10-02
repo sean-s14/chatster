@@ -21,7 +21,7 @@ if (!SSL_KEY_FILE) {
   process.exit(1);
 }
 
-if (ENV === "development") {
+if (ENV === "development" || ENV === "testing") {
   const privateKey = fs.readFileSync(SSL_KEY_FILE, "utf8");
   const certificate = fs.readFileSync(SSL_CRT_FILE, "utf8");
   const credentials = { key: privateKey, cert: certificate };

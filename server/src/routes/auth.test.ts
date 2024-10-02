@@ -1,8 +1,8 @@
-import { afterAll, describe, it, expect } from "@jest/globals";
+import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
 import request from "supertest";
 import app from "../app";
-import prisma from "../prismaClient";
 import { generateRefreshToken } from "../utils/jwt";
+import { cleanupDatabase } from "../../test/cleanup";
 
 interface User {
   id?: number;
@@ -18,8 +18,12 @@ interface Tokens {
   refresh: string | null;
 }
 
+beforeAll(async () => {
+  await cleanupDatabase();
+});
+
 afterAll(async () => {
-  await prisma.user.deleteMany();
+  await cleanupDatabase();
 });
 
 describe("Auth API", () => {

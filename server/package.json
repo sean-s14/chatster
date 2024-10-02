@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=testing jest",
+    "test:fast": "NODE_ENV=testing jest --silent",
     "build": "tsc",
     "dev": "nodemon -L src/server.ts",
     "start": "node dist/server.js"

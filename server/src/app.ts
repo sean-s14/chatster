@@ -20,7 +20,7 @@ app.use(
   })
 );
 app.use(helmet());
-app.use(morgan("dev"));
+process.env.NODE_ENV !== "testing" && app.use(morgan("dev"));
 app.use(express.json());
 app.use(errorHandler);
 

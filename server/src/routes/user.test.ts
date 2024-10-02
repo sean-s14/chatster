@@ -1,12 +1,17 @@
-import { afterAll, describe, it, expect } from "@jest/globals";
+import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
 import request from "supertest";
 import app from "../app";
 import prisma from "../prismaClient";
 import { generateAccessToken } from "../utils/jwt";
 import { AccessTokenPayload } from "../types/user";
+import { cleanupDatabase } from "../../test/cleanup";
+
+beforeAll(async () => {
+  await cleanupDatabase();
+});
 
 afterAll(async () => {
-  await prisma.user.deleteMany();
+  await cleanupDatabase();
 });
 
 describe("User API", () => {
@@ -29,7 +34,7 @@ describe("User API", () => {
 
       expect(response.status).toBe(201);
       expect(response.body.email).toBe(user.email);
-      expect(response.body.role).toBe("basic");
+      expect(response.body.role).toBe("BASIC");
       expect(response.body.username).not.toBeUndefined();
       expect(response.body.id).not.toBeUndefined();
       user.id = response.body.id;

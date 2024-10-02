@@ -30,10 +30,15 @@ type RefreshTokenInput = {
 
 interface RefreshTokenPayload extends RefreshTokenInput, JwtPayload {}
 
+interface RequestWithUser extends Request {
+  user: AccessTokenPayload;
+}
+
 export {
   User,
   AccessTokenInput,
   AccessTokenPayload,
   RefreshTokenInput,
   RefreshTokenPayload,
+  RequestWithUser,
 };

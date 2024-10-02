@@ -21,7 +21,39 @@ model User {
   email     String   @unique
   password  String?
   image     String?
-  role      String   @default("basic")
+  role      UserRole @default(BASIC)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Friends
+  friends   User[]   @relation("UserFriends")
+  friendOf  User[]   @relation("UserFriends")
+
+  // Friend Requests
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+}
+
+enum UserRole {
+  BASIC
+  ADMIN
+  SUPERUSER
+}
+
+model FriendRequest {
+  id        Int      @id @default(autoincrement())
+  senderId  Int
+  receiverId Int
+  status    FriendRequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sender    User     @relation("SentFriendRequests", fields: [senderId], references: [id])
+  receiver  User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
