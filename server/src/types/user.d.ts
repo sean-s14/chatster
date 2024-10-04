@@ -5,6 +5,7 @@ interface User {
   id: number | string;
   googleId: string | null;
   name: string | null;
+  username: string;
   email: string;
   password: string | null;
   image: string | null;

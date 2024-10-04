@@ -73,20 +73,20 @@ describe("User API", () => {
 
   describe("User Read Single", () => {
     it("should fail to retrieve user by ID without authentication", async () => {
-      const response = await request(app).get(`/api/users/${user.id}`);
+      const response = await request(app).get(`/api/users/${user.username}`);
       expect(response.status).toBe(401);
     });
 
-    it("should get a user by ID", async () => {
+    it("should get a user by Username", async () => {
       const response = await request(app)
-        .get(`/api/users/${user.id}`)
+        .get(`/api/users/${user.username}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.id).toBe(user.id);
       expect(response.body.username).toBe(user.username);
-      expect(response.body.email).toBe(user.email);
-      expect(response.body.role).toBe(user.role);
+      expect(response.body.email).toBeUndefined();
+      expect(response.body.role).toBeUndefined();
     });
 
     it("should return error if user does not exist", async () => {
@@ -94,7 +94,7 @@ describe("User API", () => {
         id: 1000,
       } as AccessTokenPayload);
       const response = await request(app)
-        .get(`/api/users/${1000}`)
+        .get("/api/users/non-existent-user-1234")
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(response.status).toBe(404);

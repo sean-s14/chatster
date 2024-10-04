@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   getAllUsers,
-  getUserById,
+  getUserByUsername,
   createUser,
   updateUser,
   deleteUser,
@@ -13,9 +13,8 @@ const router: Router = Router();
 
 router.use("/friends", friendRoutes);
 
-// TODO: Add getUserByUsername route
 router.get("/", getAllUsers);
-router.get("/:id", authenticateToken, authorizeUser, getUserById);
+router.get("/:username", authenticateToken, getUserByUsername);
 // TODO: Add middleware for createUser route
 router.post("/", createUser);
 router.patch("/:id", authenticateToken, authorizeUser, updateUser);

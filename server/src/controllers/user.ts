@@ -6,9 +6,7 @@ import { customGenerateUsername } from "../utils/auth";
 const safeUserProperties = {
   id: true,
   username: true,
-  email: true,
   image: true,
-  role: true,
   createdAt: true,
   updatedAt: true,
 };
@@ -25,12 +23,15 @@ async function getAllUsers(req: Request, res: Response): Promise<Response> {
   }
 }
 
-async function getUserById(req: Request, res: Response): Promise<Response> {
-  const { id } = req.params;
+async function getUserByUsername(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const { username } = req.params;
   try {
     const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
-      select: { ...safeUserProperties, name: true },
+      where: { username },
+      select: safeUserProperties,
     });
     if (user) {
       return res.json(user);
@@ -90,7 +91,16 @@ async function updateUser(req: Request, res: Response): Promise<Response> {
     const updatedUser = await prisma.user.update({
       where: { id: Number(id) },
       data: { name, username, email },
-      select: { ...safeUserProperties, name: true },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        image: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        name: true,
+      },
     });
     return res.json(updatedUser);
   } catch (error) {
@@ -110,4 +120,4 @@ async function deleteUser(req: Request, res: Response): Promise<Response> {
   }
 }
 
-export { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+export { getAllUsers, getUserByUsername, createUser, updateUser, deleteUser };

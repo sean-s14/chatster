@@ -62,6 +62,18 @@ describe("User Friends API", () => {
         .set("Authorization", `Bearer ${user1.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body.friends.length).toBe(2);
+      expect(response.body.friends[0].username).toBe(user2.username);
+      expect(response.body.friends[0].image).toBeDefined();
+      expect(response.body.friends[0].createdAt).toBeDefined();
+      expect(response.body.friends[0].updatedAt).toBeDefined();
+    });
+
+    it("should get one friend for user1 with pagination", async () => {
+      const response = await request(app)
+        .get("/api/users/friends?page=1&limit=1")
+        .set("Authorization", `Bearer ${user1.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.body.friends.length).toBe(1);
     });
 
     it("should get one friend for user2", async () => {

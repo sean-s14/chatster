@@ -20,7 +20,8 @@
 - Create utility to generate an admin/superuser before running tests
 - Add more tests to routes/auth.test.ts and routes/user.test.ts
 - Add property to enable private or public user accounts
-- Write script for injecting fake users before running manual tests
+- Implement email confirmation
+- Implement pagination for /api/users
 
 ## Issues
 
