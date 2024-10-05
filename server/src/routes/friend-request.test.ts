@@ -53,6 +53,17 @@ describe("Friend Request API", () => {
       friendRequestIds = friendRequests.map((request) => request.id);
     });
 
+    it("should fail to send friend request from user1 to user2 again", async () => {
+      const response = await request(app)
+        .post("/api/users/friends/request")
+        .set("Authorization", `Bearer ${user1.accessToken}`)
+        .send({
+          friendId: user2.id,
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe("Pending friend request already exists");
+    });
+
     it("should send friend request from user1 to user3", async () => {
       const response = await request(app)
         .post("/api/users/friends/request")

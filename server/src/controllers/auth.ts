@@ -73,7 +73,7 @@ async function login(req: Request, res: Response) {
 
     if (isMatch) {
       const accessTokenPayload: AccessTokenInput = {
-        id: existingUser.id.toString(),
+        id: existingUser.id,
         email: existingUser.email,
         username: existingUser.username,
         name: existingUser.name || undefined,
@@ -112,7 +112,7 @@ async function getNewAccessToken(req: Request, res: Response) {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const accessTokenPayload: AccessTokenPayload = {
-      id: user.id.toString(),
+      id: user.id,
       email: user.email,
       username: user.username,
       name: user.name || undefined,

@@ -124,4 +124,27 @@ async function removeFriend(req: Request, res: Response): Promise<Response> {
   }
 }
 
-export { getAllFriends, addFriend, removeFriend };
+async function isFriend(req: Request, res: Response): Promise<Response> {
+  const { username } = req.params;
+  const { id: userId } = (req as RequestWithUser).user;
+
+  try {
+    const friendCount = await prisma.user.count({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            username,
+          },
+        },
+      },
+    });
+
+    return res.json({ isFriend: friendCount > 0 });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error checking friend status" });
+  }
+}
+
+export { getAllFriends, addFriend, removeFriend, isFriend };

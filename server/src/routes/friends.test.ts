@@ -55,6 +55,24 @@ describe("User Friends API", () => {
     });
   });
 
+  describe("Checking if user is friend", () => {
+    it("should return true for user1 and user2", async () => {
+      const response = await request(app)
+        .get(`/api/users/friends/is-friend/${user2.username}`)
+        .set("Authorization", `Bearer ${user1.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.body.isFriend).toBe(true);
+    });
+
+    it("should return false for user2 and user3", async () => {
+      const response = await request(app)
+        .get(`/api/users/friends/is-friend/${user3.username}`)
+        .set("Authorization", `Bearer ${user2.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.body.isFriend).toBe(false);
+    });
+  });
+
   describe("Getting all friends", () => {
     it("should get two friends for user1", async () => {
       const response = await request(app)

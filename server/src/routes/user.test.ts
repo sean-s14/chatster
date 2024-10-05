@@ -72,7 +72,7 @@ describe("User API", () => {
   });
 
   describe("User Read Single", () => {
-    it("should fail to retrieve user by ID without authentication", async () => {
+    it("should fail to retrieve user by Username without authentication", async () => {
       const response = await request(app).get(`/api/users/${user.username}`);
       expect(response.status).toBe(401);
     });

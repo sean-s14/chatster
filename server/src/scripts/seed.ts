@@ -44,6 +44,8 @@ async function giveUsersFriends(
   const users = await prisma.user.findMany();
   const userIds = users.map((user) => user.id);
 
+  console.log("Giving users friends...");
+
   for (const user of users) {
     const friendIds = faker.helpers.arrayElements(userIds, {
       min,

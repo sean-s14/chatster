@@ -54,6 +54,22 @@ async function sendFriendRequest(
   }
 
   try {
+    const existingRequest = await prisma.friendRequest.findFirst({
+      where: {
+        OR: [
+          { senderId: Number(userId), receiverId: Number(friendId) },
+          { senderId: Number(friendId), receiverId: Number(userId) },
+        ],
+        status: "PENDING",
+      },
+    });
+
+    if (existingRequest) {
+      return res
+        .status(400)
+        .json({ error: "Pending friend request already exists" });
+    }
+
     const friendRequest = await prisma.friendRequest.create({
       data: {
         senderId: Number(userId),

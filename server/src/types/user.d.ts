@@ -2,7 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { Request } from "express";
 
 interface User {
-  id: number | string;
+  id: number;
   googleId: string | null;
   name: string | null;
   username: string;
@@ -15,7 +15,7 @@ interface User {
 }
 
 interface AccessTokenInput {
-  id: number | string;
+  id: number;
   email: string;
   username: string;
   name?: string;
