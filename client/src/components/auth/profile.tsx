@@ -1,4 +1,4 @@
-import { AccessTokenPayload as User } from "@/context/auth-context";
+import { AccessTokenPayload as User } from "@/types/auth";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -34,12 +34,13 @@ export default function Profile({ user }: { user: User }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
+        <DropdownMenuLabel>@{user?.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link to="/settings">Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="line-through">Support</DropdownMenuItem>
+        {/* TODO: Add support link */}
+        <DropdownMenuItem disabled>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="p-0">
           <LogoutButton className="w-full justify-start" variant={"ghost"} />

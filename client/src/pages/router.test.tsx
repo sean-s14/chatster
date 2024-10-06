@@ -1,5 +1,4 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import { AuthProvider } from "@/context/auth-context";
 import { render, screen } from "@testing-library/react";
 import { describe, it } from "vitest";
 import routes from "@/pages/router-config";
@@ -10,11 +9,7 @@ describe("Router", () => {
       initialEntries: ["/"],
     });
 
-    render(
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    );
+    render(<RouterProvider router={router} />);
     expect(screen.getByText("Welcome to Chatster!")).toBeInTheDocument();
   });
 

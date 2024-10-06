@@ -7,14 +7,13 @@ import {
   validatePassword,
 } from "@/utils/auth/credential-validation";
 import { LoginFormData } from "@/types/form-data";
-import { useAuth } from "@/context/auth-context";
 import { useNavigate, Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useToast } from "@/hooks/shadcn/use-toast";
+import login from "@/services/auth/login";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState<LoginFormData>({
@@ -52,7 +51,7 @@ const LoginForm: React.FC = () => {
       setErrors(errors);
     } else {
       try {
-        const response = await login(formData.email!, formData.password!);
+        const response = await login(formData);
         if (response.status === 200) {
           toast({
             title: "Login Successful!",

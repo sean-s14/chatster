@@ -126,7 +126,7 @@ const logoutMockResponse = {
   success: {
     status: 200,
     statusText: "OK",
-    data: null,
+    data: { message: "Logged out" },
     headers: {
       "Content-Type": "application/json",
     },
@@ -135,7 +135,15 @@ const logoutMockResponse = {
 };
 
 const refreshAccessTokenMockResponse = {
-  success: accessToken,
+  success: {
+    status: 200,
+    statusText: "OK",
+    data: { accessToken },
+    headers: {
+      "Content-Type": "application/json",
+    },
+    config: {} as any,
+  },
   unauthorized: new AxiosError("Unauthorized", "401", undefined, undefined, {
     status: 401,
     statusText: "Unauthorized",

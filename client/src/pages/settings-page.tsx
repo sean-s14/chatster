@@ -3,11 +3,11 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@/components/shadcn/ui/avatar";
-import { useAuth } from "@/context/auth-context";
 import DeleteAccountAlertDialog from "@/components/auth/delete-account-alert-dialog";
+import decodeAccessToken from "@/utils/auth/decode-access-token";
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const user = decodeAccessToken();
 
   return (
     <div className="flex flex-col items-center pt-10">

@@ -1,6 +1,8 @@
 import axios from "axios";
+import refreshAccessToken from "@/services/auth/refresh-access-token";
+import { updateLocalStorageAccessToken } from "./auth/local-storage-access-token";
 
-function createAxiosInstance(bearer_token?: string) {
+function createAxiosInstance() {
   const instance = axios.create({
     baseURL: "",
     timeout: 10000,
@@ -10,11 +12,22 @@ function createAxiosInstance(bearer_token?: string) {
   });
 
   instance.interceptors.request.use(
-    (config) => {
+    async (config) => {
       console.log("Request:", config);
-      if (bearer_token) {
-        config.headers.Authorization = `Bearer ${bearer_token}`;
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      } else {
+        try {
+          const response = await refreshAccessToken();
+          updateLocalStorageAccessToken(response.data.accessToken);
+          config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+        } catch (error) {
+          console.error("Failed to refresh access token:", error);
+        }
       }
+
       return config;
     },
     (error) => {
@@ -37,4 +50,5 @@ function createAxiosInstance(bearer_token?: string) {
   return instance;
 }
 
-export default createAxiosInstance;
+const axiosInstance = createAxiosInstance();
+export default axiosInstance;

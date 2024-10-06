@@ -111,11 +111,19 @@ async function updateUser(req: Request, res: Response): Promise<Response> {
 async function deleteUser(req: Request, res: Response): Promise<Response> {
   const { id } = req.params;
   try {
+    await prisma.friendRequest.deleteMany({
+      where: {
+        OR: [{ senderId: Number(id) }, { receiverId: Number(id) }],
+      },
+    });
+
     await prisma.user.delete({
       where: { id: Number(id) },
     });
+
     return res.status(204).end();
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: "Error deleting user" });
   }
 }

@@ -2,12 +2,11 @@ import Profile from "@/components/auth/profile";
 import LoginButton from "@/components/auth/login-btn";
 import SignupButton from "@/components/auth/signup-btn";
 import Spinner from "@/components/spinner";
-import { useAuth } from "@/context/auth-context";
 import useAuthCheck from "@/hooks/use-auth-check";
+import decodeAccessToken from "@/utils/auth/decode-access-token";
 
 export default function ProfileOrLogin() {
   const { isAuthenticated, isLoading } = useAuthCheck();
-  const { user } = useAuth();
 
   if (isLoading) {
     return (
@@ -17,6 +16,7 @@ export default function ProfileOrLogin() {
     );
   }
 
+  const user = decodeAccessToken();
   if (isAuthenticated && user) {
     return <Profile user={user} />;
   }

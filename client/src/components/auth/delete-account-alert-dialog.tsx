@@ -10,19 +10,18 @@ import {
   AlertDialogTrigger,
 } from "@/components/shadcn/ui/alert-dialog";
 import { Button } from "@/components/shadcn/ui/button";
-import createAxiosInstance from "@/utils/axios-config";
-import { deleteAccount } from "@/services/delete-account";
-import { useAuth } from "@/context/auth-context";
+import deleteAccount from "@/services/auth/delete-account";
+import logout from "@/services/auth/logout";
 import useAuthCheck from "@/hooks/use-auth-check";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/shadcn/use-toast";
+import decodeAccessToken from "@/utils/auth/decode-access-token";
 
 export default function DeleteAccountAlertDialog({
   className,
 }: {
   className?: string;
 }) {
-  const { accessToken, user, logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAuthenticated } = useAuthCheck();
@@ -36,9 +35,9 @@ export default function DeleteAccountAlertDialog({
       });
       return;
     }
-    const axiosInstance = createAxiosInstance(accessToken!);
+    const user = decodeAccessToken();
     try {
-      const response = await deleteAccount(axiosInstance, user!.id.toString());
+      const response = await deleteAccount(user!.id);
       if (response.status === 204) {
         toast({
           title: "Success",

@@ -8,7 +8,7 @@ import {
   validateConfirmPassword,
 } from "@/utils/auth/credential-validation";
 import { SignupFormData } from "@/types/form-data";
-import { signup } from "@/services/signup";
+import signup from "@/services/auth/signup";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/shadcn/use-toast";

@@ -1,18 +1,26 @@
-import { useAuth } from "@/context/auth-context";
 import { useEffect, useState } from "react";
+import refreshAccessToken from "@/services/auth/refresh-access-token";
+import { useAccessToken } from "./use-access-token";
 
 const useAuthCheck = () => {
-  const { accessToken, refreshAccessToken } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [accessToken] = useAccessToken();
 
   useEffect(() => {
     const checkAuth = async () => {
       if (!accessToken) {
-        const newToken = await refreshAccessToken();
-        if (newToken) {
-          setIsAuthenticated(true);
-        } else {
+        try {
+          const {
+            data: { accessToken: newToken },
+          } = await refreshAccessToken();
+          if (newToken) {
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.error("Failed to refresh access token:", error);
           setIsAuthenticated(false);
         }
       } else {

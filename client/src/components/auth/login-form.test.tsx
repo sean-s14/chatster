@@ -2,10 +2,9 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "@/context/auth-context";
 import { Toaster } from "@/components/shadcn/ui/toaster";
-import * as loginService from "@/services/login";
-import * as refreshAccessTokenService from "@/services/refresh-access-token";
+import * as loginService from "@/services/auth/login";
+import * as refreshAccessTokenService from "@/services/auth/refresh-access-token";
 import mockResponse from "@/__mocks__/mock-api-responses";
 import { user, userPassword } from "@/__mocks__/mock-user-data";
 import LoginForm from "@/components/auth/login-form";
@@ -23,17 +22,15 @@ describe("Login Form", () => {
     it("Logs the user in", async () => {
       const userSetup = userEvent.setup();
 
-      vi.spyOn(loginService, "login").mockResolvedValue(
+      vi.spyOn(loginService, "default").mockResolvedValue(
         mockResponse.login.success
       );
 
       render(
-        <AuthProvider>
-          <BrowserRouter>
-            <LoginForm />
-            <Toaster />
-          </BrowserRouter>
-        </AuthProvider>
+        <BrowserRouter>
+          <LoginForm />
+          <Toaster />
+        </BrowserRouter>
       );
 
       const emailInput = screen.getByLabelText("Email:");
@@ -47,8 +44,8 @@ describe("Login Form", () => {
 
       expect(screen.queryByText("Login Successful!")).toBeInTheDocument();
 
-      expect(loginService.login).toHaveBeenCalledTimes(1);
-      expect(loginService.login).toHaveBeenCalledWith({
+      expect(loginService.default).toHaveBeenCalledTimes(1);
+      expect(loginService.default).toHaveBeenCalledWith({
         email: user.email,
         password: userPassword,
       });
@@ -69,12 +66,10 @@ describe("Login Form", () => {
         const userSetup = userEvent.setup();
 
         render(
-          <AuthProvider>
-            <BrowserRouter>
-              <LoginForm />
-              <Toaster />
-            </BrowserRouter>
-          </AuthProvider>
+          <BrowserRouter>
+            <LoginForm />
+            <Toaster />
+          </BrowserRouter>
         );
 
         const emailInput = screen.getByLabelText("Email:");
@@ -85,21 +80,18 @@ describe("Login Form", () => {
       it("Displays error when password is incorrect", async () => {
         const userSetup = userEvent.setup();
 
-        vi.spyOn(
-          refreshAccessTokenService,
-          "refreshAccessToken"
-        ).mockRejectedValue(mockResponse.refreshAccessToken.unauthorized);
-        vi.spyOn(loginService, "login").mockRejectedValue(
+        vi.spyOn(refreshAccessTokenService, "default").mockRejectedValue(
+          mockResponse.refreshAccessToken.unauthorized
+        );
+        vi.spyOn(loginService, "default").mockRejectedValue(
           mockResponse.login.incorrectPassword
         );
 
         render(
-          <AuthProvider>
-            <BrowserRouter>
-              <LoginForm />
-              <Toaster />
-            </BrowserRouter>
-          </AuthProvider>
+          <BrowserRouter>
+            <LoginForm />
+            <Toaster />
+          </BrowserRouter>
         );
 
         const emailInput = screen.getByLabelText("Email:");
@@ -113,8 +105,8 @@ describe("Login Form", () => {
 
         expect(screen.queryByText("Incorrect password")).toBeInTheDocument();
 
-        expect(loginService.login).toHaveBeenCalledTimes(1);
-        expect(loginService.login).toHaveBeenCalledWith({
+        expect(loginService.default).toHaveBeenCalledTimes(1);
+        expect(loginService.default).toHaveBeenCalledWith({
           email: user.email,
           password: "incorrect-password",
         });
@@ -133,21 +125,18 @@ describe("Login Form", () => {
       it("Displays error when no user exists with specified email", async () => {
         const userSetup = userEvent.setup();
 
-        vi.spyOn(
-          refreshAccessTokenService,
-          "refreshAccessToken"
-        ).mockRejectedValue(mockResponse.refreshAccessToken.unauthorized);
-        vi.spyOn(loginService, "login").mockRejectedValue(
+        vi.spyOn(refreshAccessTokenService, "default").mockRejectedValue(
+          mockResponse.refreshAccessToken.unauthorized
+        );
+        vi.spyOn(loginService, "default").mockRejectedValue(
           mockResponse.login.noUserWithThisEmail
         );
 
         render(
-          <AuthProvider>
-            <BrowserRouter>
-              <LoginForm />
-              <Toaster />
-            </BrowserRouter>
-          </AuthProvider>
+          <BrowserRouter>
+            <LoginForm />
+            <Toaster />
+          </BrowserRouter>
         );
 
         const nonExistentEmail = "non-existent@email.com";
@@ -165,8 +154,8 @@ describe("Login Form", () => {
           screen.queryByText("No user exists with this email")
         ).toBeInTheDocument();
 
-        expect(loginService.login).toHaveBeenCalledTimes(1);
-        expect(loginService.login).toHaveBeenCalledWith({
+        expect(loginService.default).toHaveBeenCalledTimes(1);
+        expect(loginService.default).toHaveBeenCalledWith({
           email: nonExistentEmail,
           password: userPassword,
         });
@@ -186,21 +175,18 @@ describe("Login Form", () => {
     it("Displays error toast when server error occurs", async () => {
       const userSetup = userEvent.setup();
 
-      vi.spyOn(
-        refreshAccessTokenService,
-        "refreshAccessToken"
-      ).mockRejectedValue(mockResponse.refreshAccessToken.unauthorized);
-      vi.spyOn(loginService, "login").mockRejectedValue(
+      vi.spyOn(refreshAccessTokenService, "default").mockRejectedValue(
+        mockResponse.refreshAccessToken.unauthorized
+      );
+      vi.spyOn(loginService, "default").mockRejectedValue(
         mockResponse.login.serverError
       );
 
       render(
-        <AuthProvider>
-          <BrowserRouter>
-            <LoginForm />
-            <Toaster />
-          </BrowserRouter>
-        </AuthProvider>
+        <BrowserRouter>
+          <LoginForm />
+          <Toaster />
+        </BrowserRouter>
       );
 
       const emailInput = screen.getByLabelText("Email:");
@@ -215,8 +201,8 @@ describe("Login Form", () => {
       expect(screen.queryByText("Login failed")).toBeInTheDocument();
       expect(screen.queryByText("Something went wrong")).toBeInTheDocument();
 
-      expect(loginService.login).toHaveBeenCalledTimes(1);
-      expect(loginService.login).toHaveBeenCalledWith({
+      expect(loginService.default).toHaveBeenCalledTimes(1);
+      expect(loginService.default).toHaveBeenCalledWith({
         email: user.email,
         password: userPassword,
       });
