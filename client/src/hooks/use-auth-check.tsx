@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import refreshAccessToken from "@/services/auth/refresh-access-token";
 import { useAccessToken } from "./use-access-token";
+import { log } from "@/utils/logging";
 
 const useAuthCheck = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +21,7 @@ const useAuthCheck = () => {
             setIsAuthenticated(false);
           }
         } catch (error) {
-          console.error("Failed to refresh access token:", error);
+          log.error("Failed to refresh access token:", error);
           setIsAuthenticated(false);
         }
       } else {

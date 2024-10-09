@@ -18,7 +18,7 @@ if ! command_exists docker-compose; then
 fi
 
 # Files to look for
-FILES=("docker-compose.yaml" "docker-compose.dev.yaml" "docker-compose.dev.test.yaml")
+FILES=("docker-compose.yaml" "docker-compose.dev.yaml")
 MISSING_FILES=0
 
 # Construct the docker-compose command with multiple -f options

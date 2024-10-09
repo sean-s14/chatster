@@ -5,6 +5,7 @@ import axios, {
 } from "axios";
 import refreshAccessToken from "@/services/auth/refresh-access-token";
 import logout from "@/services/auth/logout";
+import { log } from "./logging";
 
 async function refreshAccessTokenIfNotFound(
   config: InternalAxiosRequestConfig
@@ -18,7 +19,7 @@ async function refreshAccessTokenIfNotFound(
       const response = await refreshAccessToken();
       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
     } catch (error) {
-      console.error("Failed to refresh access token:", error);
+      log.error("Failed to refresh access token:", error);
     }
   }
 
@@ -37,7 +38,7 @@ async function refreshAccessTokenOnErrorResponse(
       originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
       return instance(originalRequest);
     } catch (refreshError) {
-      console.error("Failed to refresh access token:", refreshError);
+      log.error("Failed to refresh access token:", refreshError);
       return Promise.reject(refreshError);
     }
   } else if (error.response?.status === 401) {

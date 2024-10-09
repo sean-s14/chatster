@@ -16,32 +16,32 @@ services:
       ]
 
   server:
-    command: sh -c "npx prisma generate && npm run build && npm run start"
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run build && npm run start"
     environment:
       NODE_ENV: development
-      SSL_CRT_FILE: /app/certs/cert.pem
-      SSL_KEY_FILE: /app/certs/key.pem
+      SSL_CRT_FILE: ${SSL_CRT_FILE}
+      SSL_KEY_FILE: ${SSL_KEY_FILE}
     volumes:
       - ./certs:/app/certs
     depends_on:
       - mkcert
 
   client:
-    container_name: chatster-client
     build:
       context: ./client
       dockerfile: Dockerfile.test
       args:
+        NODE_ENV: testing
         AUTH_TEST_EMAIL: ${AUTH_TEST_EMAIL}
         AUTH_TEST_PASSWORD: ${AUTH_TEST_PASSWORD}
-        VITE_BASE_URL: ${CLIENT_BASE_URL}
         VITE_SERVER_BASE_URL: ${SERVER_BASE_URL_BY_HOSTNAME}
-        VITE_SSL_CRT_FILE: /app/certs/cert.pem
-        VITE_SSL_KEY_FILE: /app/certs/key.pem
+        VITE_BASE_URL: ${CLIENT_BASE_URL}
+        VITE_SSL_CRT_FILE: ${SSL_CRT_FILE}
+        VITE_SSL_KEY_FILE: ${SSL_KEY_FILE}
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: production
+      NODE_ENV: testing
     volumes:
       - ./certs:/app/certs
     depends_on:

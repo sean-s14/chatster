@@ -2,6 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+if (!process.env.VITE_SSL_KEY_FILE || !process.env.VITE_SSL_CRT_FILE) {
+  throw new Error("SSL keys are not defined");
+}
+
 export default defineConfig({
   plugins: [react()],
   resolve: {

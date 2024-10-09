@@ -6,11 +6,12 @@ import {
   AlertTitle,
 } from "@/components/shadcn/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { log } from "@/utils/logging";
 
 export default function ErrorPage() {
   const error = useRouteError();
 
-  if (import.meta.env.DEV) console.error(error);
+  log.error(error);
 
   let errorMessage: string;
 
@@ -21,7 +22,7 @@ export default function ErrorPage() {
   } else if (typeof error === "string") {
     errorMessage = error;
   } else {
-    if (import.meta.env.DEV) console.error(error);
+    log.error(error);
     errorMessage = "Unknown error";
   }
 

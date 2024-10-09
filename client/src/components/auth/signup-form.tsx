@@ -12,6 +12,7 @@ import signup from "@/services/auth/signup";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/shadcn/use-toast";
+import { log } from "@/utils/logging";
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const SignupForm: React.FC = () => {
           return navigate("/login");
         }
       } catch (error) {
-        console.error("Signup failed:", error);
+        log.error("Signup failed:", error);
         if (error instanceof AxiosError) {
           if (error.response?.data.errors) {
             setErrors(error.response?.data.errors);

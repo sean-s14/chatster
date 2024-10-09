@@ -28,3 +28,4 @@
 ## Issues
 
 - Inconsistent naming of error messages between routes/auth.test.ts and routes/user.test.ts
+- "Friends Page > should render skeletons when loading" occasionally fails saying 'expected ...role="listitem"... to have length of 12 but got 2'

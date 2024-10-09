@@ -16,6 +16,7 @@ import useAuthCheck from "@/hooks/use-auth-check";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/shadcn/use-toast";
 import decodeAccessToken from "@/utils/auth/decode-access-token";
+import { log } from "@/utils/logging";
 
 export default function DeleteAccountAlertDialog({
   className,
@@ -49,7 +50,7 @@ export default function DeleteAccountAlertDialog({
       }
     } catch (error) {
       // TODO: Display error message in a toast
-      console.error("Error deleting account:", error);
+      log.error("Error deleting account:", error);
       toast({
         title: "Error",
         description: "Request failed",

@@ -21,7 +21,7 @@ if (!SSL_KEY_FILE) {
   process.exit(1);
 }
 
-if (ENV === "development" || ENV === "testing") {
+if (ENV === "development" || ENV === "testing" || ENV === "production") {
   const privateKey = fs.readFileSync(SSL_KEY_FILE, "utf8");
   const certificate = fs.readFileSync(SSL_CRT_FILE, "utf8");
   const credentials = { key: privateKey, cert: certificate };
@@ -31,7 +31,7 @@ if (ENV === "development" || ENV === "testing") {
     console.log(`Server running at ${process.env.SERVER_BASE_URL}/`);
   });
 } else if (ENV === "production") {
-  // TODO: Implement production server configuration
+  // TODO: (later) Implement production server configuration
 } else {
   server = app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}/`);

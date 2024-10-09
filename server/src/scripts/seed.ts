@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 import { customGenerateUsername } from "../utils/auth";
+import { User } from "../types/user";
 
 const prisma = new PrismaClient();
 
@@ -42,7 +43,7 @@ async function giveUsersFriends(
 ) {
   let updatedUsers = 0;
   const users = await prisma.user.findMany();
-  const userIds = users.map((user) => user.id);
+  const userIds = users.map((user: User) => user.id);
 
   console.log("Giving users friends...");
 

@@ -30,6 +30,7 @@ import isFriendService from "@/services/is-friend";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Skeleton } from "@/components/shadcn/ui/skeleton";
 import { useEffect } from "react";
+import { log } from "@/utils/logging";
 
 function FriendStatus({ user }: { user: User }) {
   const { toast } = useToast();
@@ -52,7 +53,7 @@ function FriendStatus({ user }: { user: User }) {
       queryClient.invalidateQueries({ queryKey: queryKey });
     },
     onError: (error) => {
-      if (import.meta.env.DEV) console.error("Error removing friend:", error);
+      log.error("Error removing friend:", error);
       toast({
         title: "Error",
         description: error.message,
@@ -70,8 +71,7 @@ function FriendStatus({ user }: { user: User }) {
       });
     },
     onError: (error) => {
-      if (import.meta.env.DEV)
-        console.error("Error sending friend request:", error);
+      log.error("Error sending friend request:", error);
 
       toast({
         title: "Error",
@@ -83,8 +83,7 @@ function FriendStatus({ user }: { user: User }) {
 
   useEffect(() => {
     if (isError) {
-      if (import.meta.env.DEV)
-        console.error("Error fetching friend status:", error);
+      log.error("Error fetching friend status:", error);
       toast({
         title: "Error",
         description: error?.message,
@@ -214,7 +213,7 @@ export default function UserPage() {
 
   useEffect(() => {
     if (isError) {
-      if (import.meta.env.DEV) console.error("Error fetching user:", error);
+      log.error("Error fetching user:", error);
       toast({
         title: "Error",
         description: error?.message,

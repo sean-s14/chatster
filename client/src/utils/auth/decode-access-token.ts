@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { AccessTokenPayload } from "@/types/auth";
+import { log } from "@/utils/logging";
 
 function decodeAccessToken() {
   const accessToken = localStorage.getItem("accessToken");
@@ -7,7 +8,7 @@ function decodeAccessToken() {
     try {
       return jwtDecode<AccessTokenPayload>(accessToken);
     } catch (error) {
-      import.meta.env.DEV && console.error(error);
+      log.error(error);
     }
   }
   return null;

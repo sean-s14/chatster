@@ -19,12 +19,13 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
-    command: sh -c "npx prisma generate && npm run dev"
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run dev"
     environment:
       NODE_ENV: development
       SSL_CRT_FILE: ${SSL_CRT_FILE}
       SSL_KEY_FILE: ${SSL_KEY_FILE}
     volumes:
+      - /app/node_modules
       - ./server:/app
       - ./certs:/app/certs
     depends_on:
@@ -43,6 +44,7 @@ services:
       VITE_SSL_CRT_FILE: ${SSL_CRT_FILE}
       VITE_SSL_KEY_FILE: ${SSL_KEY_FILE}
     volumes:
+      - /app/node_modules
       - ./client:/app
       - ./certs:/app/certs
     depends_on:
