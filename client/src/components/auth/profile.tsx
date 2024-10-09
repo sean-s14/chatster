@@ -41,6 +41,9 @@ export default function Profile({ user }: { user: User }) {
         </DropdownMenuItem>
         {/* TODO: Add support link */}
         <DropdownMenuItem disabled>Support</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/friends">Friends</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="p-0">
           <LogoutButton className="w-full justify-start" variant={"ghost"} />

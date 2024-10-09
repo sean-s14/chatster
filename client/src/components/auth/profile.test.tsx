@@ -29,6 +29,7 @@ describe("Profile", () => {
     expect(screen.getByText("@" + user.username)).toBeInTheDocument();
     expect(screen.getByText("Settings")).toBeInTheDocument();
     expect(screen.getByText("Support")).toBeInTheDocument();
+    expect(screen.getByText("Friends")).toBeInTheDocument();
     expect(screen.getByText("Log Out")).toBeInTheDocument();
   });
 });

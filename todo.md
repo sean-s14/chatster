@@ -3,13 +3,15 @@
 ## TODO
 
 - Create tests for service functions
-- Replace Axios with TanStack Query and take advantage of Suspense and useSuspenseQuery hook
 - Add search bar to search for users
+- In Setting page have different sections for:
+  - General Info (username, name, etc.)
+  - Email
+  - Password
 - Implement functionality to:
   - update user profile
   - update user password
-  - send friend requests
-  - accept/reject friend requests
+  - accept, reject, and cancel friend requests
 
 ## Issues
 

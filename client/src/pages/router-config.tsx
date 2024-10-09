@@ -5,6 +5,8 @@ import SettingsPage from "@/pages/settings-page";
 import ProtectedComponent from "@/components/auth/protected-component";
 import LoginPage from "@/pages/auth/login-page";
 import SignupPage from "@/pages/auth/signup-page";
+import FriendsPage from "@/pages/friends-page";
+import UserPage from "@/pages/user-page";
 
 const routes = [
   {
@@ -27,6 +29,14 @@ const routes = [
       {
         path: "/settings",
         element: <ProtectedComponent Component={SettingsPage} />,
+      },
+      {
+        path: "/friends",
+        element: <ProtectedComponent Component={FriendsPage} />,
+      },
+      {
+        path: "/user/:username",
+        element: <ProtectedComponent Component={UserPage} />,
       },
     ],
   },

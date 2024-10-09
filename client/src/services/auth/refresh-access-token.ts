@@ -21,6 +21,7 @@ async function refreshAccessToken(): Promise<
 
     updateLocalStorageAccessToken(response.data.accessToken);
 
+    import.meta.env.DEV && console.log("Refreshed access token:", response);
     return response;
   } catch (error) {
     throw error;
