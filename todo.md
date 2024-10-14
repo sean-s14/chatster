@@ -11,10 +11,13 @@
 - Implement functionality to:
   - update user profile
   - update user password
-  - accept, reject, and cancel friend requests
 - Add a success variant for the shadcn button component
 
 ## Issues
+
+- Ocassionally receive the following error:
+  "FAIL src/pages/friends-page.test.tsx > Friends Page > should render skeletons when loading
+  TestingLibraryElementError: Unable to find an element by: [data-testid="friends-page-content-skeleton"]"
 
 # Server
 
@@ -30,6 +33,3 @@
 ## Issues
 
 - Inconsistent naming of error messages between routes/auth.test.ts and routes/user.test.ts
-- Ocassionally receive the following error:
-  "FAIL src/pages/friends-page.test.tsx > Friends Page > should render skeletons when loading
-  TestingLibraryElementError: Unable to find an element by: [data-testid="friends-page-content-skeleton"]"
