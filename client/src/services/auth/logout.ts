@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { removeLocalStorageAccessToken } from "@/utils/auth/local-storage-access-token";
 
 interface LogoutResponse {
-  message: string;
+  success: string;
 }
 
 async function logout(): Promise<AxiosResponse<LogoutResponse>> {

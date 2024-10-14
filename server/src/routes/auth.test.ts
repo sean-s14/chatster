@@ -48,7 +48,7 @@ describe("Auth API", () => {
     it("should signup a new user", async () => {
       const response = await request(app).post("/api/auth/signup").send(user);
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe("User created");
+      expect(response.body.success).toBe("User created");
     });
 
     it("should return 400 if user already exists", async () => {
@@ -91,6 +91,15 @@ describe("Auth API", () => {
       expect(response.status).toBe(404);
       expect(response.body.errors.email).toBe("No user exists with this email");
     });
+
+    it("should fail to login with incorrect password", async () => {
+      const response = await request(app).post("/api/auth/login").send({
+        email: user.email,
+        password: "wrongpassword",
+      });
+      expect(response.status).toBe(400);
+      expect(response.body.errors.password).toBe("Incorrect password");
+    });
   });
 
   describe("Refresh Token", () => {
@@ -106,7 +115,7 @@ describe("Auth API", () => {
     it("should return 401 if refresh token is missing", async () => {
       const response = await request(app).post("/api/auth/token");
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Refresh Token not provided");
+      expect(response.body.error).toBe("Refresh Token not provided");
     });
 
     it("should return 403 if refresh token is invalid", async () => {
@@ -114,7 +123,7 @@ describe("Auth API", () => {
         .post("/api/auth/token")
         .set("Cookie", `refreshToken=invalidRefreshToken`);
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe("Invalid Refresh Token");
+      expect(response.body.error).toBe("Invalid Refresh Token");
     });
 
     it("should return 404 not found if user does not exist", async () => {
@@ -122,7 +131,7 @@ describe("Auth API", () => {
         .post("/api/auth/token")
         .set("Cookie", `refreshToken=${generateRefreshToken({ id: 100 })}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe("User not found");
+      expect(response.body.error).toBe("User not found");
     });
   });
 
@@ -132,7 +141,7 @@ describe("Auth API", () => {
         .post("/api/auth/logout")
         .set("Cookie", tokens.refresh!);
       expect(response.status).toBe(200);
-      expect(response.body.message).toBe("Logged out");
+      expect(response.body.success).toBe("Logged out");
       expect(response.headers["set-cookie"][0].split("=")[1]).toBe("; Path");
     });
   });
