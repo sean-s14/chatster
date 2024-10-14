@@ -1,31 +1,44 @@
-enum FriendRequestStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  REJECTED = "REJECTED",
-}
-
-interface FriendRequest {
+type FriendRequestType = "ALL" | "SENT" | "RECEIVED";
+type FriendRequestStatusType = "PENDING" | "ACCEPTED" | "REJECTED";
+interface FriendRequestDetails {
   id: number;
   senderId: number;
   receiverId: number;
   status: $Enums.FriendRequestStatus;
   createdAt: Date;
   updatedAt: Date;
+  sender: {
+    id: number;
+    username: string;
+    image: string;
+  };
+  receiver: {
+    id: number;
+    username: string;
+    image: string;
+  };
 }
 
-interface GetReceivedFriendRequests {
-  receivedFriendRequests: FriendRequest[];
+interface GetFriendRequests {
+  friendRequests: FriendRequestDetails[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
 }
 
-interface GetReceivedFriendRequestsError {
+interface GetFriendRequestsError {
   error: string;
 }
 
-interface GetSentFriendRequests {
-  sentFriendRequests: FriendRequest[];
+interface GetFriendRequestCount {
+  sentCount: number;
+  receivedCount: number;
 }
 
-interface GetSentFriendRequestsError {
+interface GetFriendRequestCountError {
   error: string;
 }
 
@@ -53,16 +66,28 @@ interface RejectFriendRequestError {
   error: string;
 }
 
+interface CancelFriendRequest {
+  success: string;
+}
+
+interface CancelFriendRequestError {
+  error: string;
+}
+
 export {
-  FriendRequestStatus,
-  GetReceivedFriendRequests,
-  GetReceivedFriendRequestsError,
-  GetSentFriendRequests,
-  GetSentFriendRequestsError,
+  FriendRequestType,
+  FriendRequestStatusType,
+  FriendRequestDetails,
+  GetFriendRequests,
+  GetFriendRequestsError,
+  GetFriendRequestCount,
+  GetFriendRequestCountError,
   SendFriendRequest,
   SendFriendRequestError,
   AcceptFriendRequest,
   AcceptFriendRequestError,
   RejectFriendRequest,
   RejectFriendRequestError,
+  CancelFriendRequest,
+  CancelFriendRequestError,
 };

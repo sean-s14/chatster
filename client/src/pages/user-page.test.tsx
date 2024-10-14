@@ -131,7 +131,6 @@ describe("User Page", () => {
       });
     });
 
-    // TODO: Add test to check for skeleton when loading
     it("should display skeleton when loading", async () => {
       const userSetup = userEvent.setup();
 
