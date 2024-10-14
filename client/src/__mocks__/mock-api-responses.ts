@@ -5,7 +5,7 @@ const signupMockResponse = {
   success: {
     status: 201,
     statusText: "Created",
-    data: { message: "User created" },
+    data: { success: "User created" },
     headers: {
       "Content-Type": "application/json",
     },
@@ -19,7 +19,7 @@ const signupMockResponse = {
     {
       status: 500,
       statusText: "Internal Server Error",
-      data: { message: "Something went wrong" },
+      data: { error: "Something went wrong" },
       headers: {
         "Content-Type": "application/json",
       },
@@ -98,7 +98,7 @@ const loginMockResponse = {
     {
       status: 500,
       statusText: "Internal Server Error",
-      data: { message: "Something went wrong" },
+      data: { error: "Something went wrong" },
       headers: {
         "Content-Type": "application/json",
       },
@@ -126,7 +126,7 @@ const logoutMockResponse = {
   success: {
     status: 200,
     statusText: "OK",
-    data: { message: "Logged out" },
+    data: { success: "Logged out" },
     headers: {
       "Content-Type": "application/json",
     },

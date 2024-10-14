@@ -307,7 +307,7 @@ function FriendRequestDetails({ request }: { request: IFriendRequestDetails }) {
             ) : (
               <div className="flex gap-4">
                 <Button
-                  variant={"secondary"}
+                  variant={"success"}
                   onClick={handleAcceptFriendRequest}
                   disabled={
                     acceptFriendRequestMutation.isPending ||

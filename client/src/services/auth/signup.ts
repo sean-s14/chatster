@@ -3,7 +3,7 @@ import { SignupFormData } from "@/types/form-data";
 import axiosInstance from "@/utils/axios-config";
 
 interface SignupResponse {
-  message: string;
+  success: string;
 }
 
 async function signup(

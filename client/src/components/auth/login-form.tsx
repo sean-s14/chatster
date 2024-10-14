@@ -64,10 +64,10 @@ const LoginForm: React.FC = () => {
         if (error instanceof AxiosError) {
           if (error.response?.data.errors) {
             setErrors(error.response?.data.errors);
-          } else if (error.response?.data.message) {
+          } else if (error.response?.data.error) {
             toast({
               title: "Login failed",
-              description: error.response?.data.message,
+              description: error.response?.data.error,
               variant: "destructive",
             });
           }

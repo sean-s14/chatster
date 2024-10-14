@@ -11,7 +11,6 @@
 - Implement functionality to:
   - update user profile
   - update user password
-- Add a success variant for the shadcn button component
 
 ## Issues
 
@@ -24,7 +23,6 @@
 ## TODO
 
 - Create utility to generate an admin/superuser before running tests
-- Add more tests to routes/auth.test.ts and routes/user.test.ts
 - Add property to enable private or public user accounts
 - Implement email confirmation
 - Implement pagination for /api/users
@@ -32,4 +30,4 @@
 
 ## Issues
 
-- Inconsistent naming of error messages between routes/auth.test.ts and routes/user.test.ts
+- seed script sometimes sends friend request to self
