@@ -12,6 +12,7 @@
   - update user profile
   - update user password
   - accept, reject, and cancel friend requests
+- Add a success variant for the shadcn button component
 
 ## Issues
 
@@ -24,8 +25,11 @@
 - Add property to enable private or public user accounts
 - Implement email confirmation
 - Implement pagination for /api/users
+- Redesign tests to use clean database after each describe section to make it easier to debug
 
 ## Issues
 
 - Inconsistent naming of error messages between routes/auth.test.ts and routes/user.test.ts
-- "Friends Page > should render skeletons when loading" occasionally fails saying 'expected ...role="listitem"... to have length of 12 but got 2'
+- Ocassionally receive the following error:
+  "FAIL src/pages/friends-page.test.tsx > Friends Page > should render skeletons when loading
+  TestingLibraryElementError: Unable to find an element by: [data-testid="friends-page-content-skeleton"]"

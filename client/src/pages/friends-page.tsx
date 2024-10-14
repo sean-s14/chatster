@@ -95,7 +95,10 @@ function FriendsPageContent() {
 
 function FriendsPageContentSkeleton() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div
+      className="flex flex-col items-center justify-center gap-4"
+      data-testid="friends-page-content-skeleton"
+    >
       <Skeleton className="w-44 h-3 animate-pulse bg-slate-400" />
       <ul className="flex gap-3 flex-wrap justify-center max-w-[80%]">
         {Array.from({ length: friendLimit }).map((_, index) => (
